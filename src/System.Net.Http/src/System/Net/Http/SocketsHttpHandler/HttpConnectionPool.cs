@@ -584,24 +584,39 @@ namespace System.Net.Http
             {
                 Socket socket = null;
                 Stream stream = null;
-                Func<string, int, CancellationToken, ValueTask<(Socket, Stream)>> socketDialer = ConnectHelper.ConnectAsync;
-                if (Settings._socketDialer != null)
-                {
-                    socketDialer = Settings._socketDialer;
-                } else if (Settings._streamDialer != null)
-                {
-                    socketDialer = async (string host, int port, CancellationToken cancellationToken) => (null, await Settings._streamDialer(host, port, cancellationToken));
-                }                
+                var connectCallback = Settings._connectCallback;
                 switch (_kind)
                 {
                     case HttpConnectionKind.Http:
                     case HttpConnectionKind.Https:
-                    case HttpConnectionKind.ProxyConnect:                 
-                        (socket, stream) = await socketDialer(_host, _port, cancellationToken).ConfigureAwait(false);
+                    case HttpConnectionKind.ProxyConnect:
+                        if (connectCallback != null)
+                        {
+                            stream = await connectCallback(request, cancellationToken).ConfigureAwait(false);
+                            if (stream is IWithSocket withSocket)
+                            {
+                                socket = withSocket.Socket;
+                            }
+                        }
+                        else
+                        {
+                            (socket, stream) = await ConnectHelper.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
+                        }
                         break;
 
                     case HttpConnectionKind.Proxy:
-                        (socket, stream) = await socketDialer(_proxyUri.IdnHost, _proxyUri.Port, cancellationToken).ConfigureAwait(false);
+                        if (connectCallback != null)
+                        {
+                            stream = await connectCallback(request, cancellationToken).ConfigureAwait(false);
+                            if (stream is IWithSocket withSocket)
+                            {
+                                socket = withSocket.Socket;
+                            }
+                        }
+                        else
+                        {
+                            (socket, stream) = await ConnectHelper.ConnectAsync(_proxyUri.IdnHost, _proxyUri.Port, cancellationToken).ConfigureAwait(false);
+                        }
                         break;
 
                     case HttpConnectionKind.ProxyTunnel:
@@ -1104,5 +1119,16 @@ namespace System.Net.Http
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Mark a stream as exposing direct access to the underlying socket
+    /// </summary>
+    public interface IWithSocket
+    {
+        /// <summary>
+        /// Get the underlying socket
+        /// </summary>
+        Socket Socket { get; }
     }
 }

@@ -51,10 +51,10 @@ namespace System.Net.Http.Functional.Tests
             if (useStreamDialer && useSocketsHttpHandler)
             {
                 var socketsHandler = (GetUnderlyingSocketsHttpHandler(handler) as Http.SocketsHttpHandler);
-                socketsHandler.StreamDialer =  (string host, int port, Threading.CancellationToken cancellationToken) =>
-                {
+                socketsHandler.ConnectCallback =  (HttpRequestMessage request, Threading.CancellationToken cancellationToken) =>
+                {                    
                     var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                    socket.Connect(host, port);
+                    socket.Connect(request.RequestUri.Host, request.RequestUri.Port);
                     return new Threading.Tasks.ValueTask<IO.Stream>(new NetworkStream(socket, true));
                 };
             }

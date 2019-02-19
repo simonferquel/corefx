@@ -261,8 +261,7 @@ namespace System.Net.Http
         public System.Net.Security.SslClientAuthenticationOptions SslOptions { get { throw null; } set { } }
         public bool UseCookies { get { throw null; } set { } }
         public bool UseProxy { get { throw null; } set { } }
-        public Func<string, int, Threading.CancellationToken, Threading.Tasks.ValueTask<(Sockets.Socket, IO.Stream)>> SocketDialer { get { throw null; } set { } }
-        public Func<string, int, Threading.CancellationToken, Threading.Tasks.ValueTask<IO.Stream>> StreamDialer { get { throw null; } set { } }
+        public Func<HttpRequestMessage, Threading.CancellationToken, Threading.Tasks.ValueTask<IO.Stream>> ConnectCallback { get { throw null; } set { } }
         protected override void Dispose(bool disposing) { }
         protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) { throw null; }
     }
@@ -281,6 +280,11 @@ namespace System.Net.Http
         public StringContent(string content) : base(default(byte[])) { }
         public StringContent(string content, System.Text.Encoding encoding) : base(default(byte[])) { }
         public StringContent(string content, System.Text.Encoding encoding, string mediaType) : base(default(byte[])) { }
+    }
+
+    public interface IWithSocket
+    {
+        Sockets.Socket Socket { get; }
     }
 }
 namespace System.Net.Http.Headers

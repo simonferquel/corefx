@@ -47,9 +47,8 @@ namespace System.Net.Http
         internal SslClientAuthenticationOptions _sslOptions;
 
         internal IDictionary<string, object> _properties;
-
-        internal Func<string, int, CancellationToken, ValueTask<(Socket, Stream)>> _socketDialer;
-        internal Func<string, int, CancellationToken, ValueTask<Stream>> _streamDialer;
+        
+        internal Func<HttpRequestMessage, CancellationToken, ValueTask<Stream>> _connectCallback;
 
         public HttpConnectionSettings()
         {
@@ -87,8 +86,7 @@ namespace System.Net.Http
                 _sslOptions = _sslOptions?.ShallowClone(), // shallow clone the options for basic prevention of mutation issues while processing
                 _useCookies = _useCookies,
                 _useProxy = _useProxy,
-                _socketDialer = _socketDialer,
-                _streamDialer = _streamDialer,
+                _connectCallback = _connectCallback,
             };
         }
 

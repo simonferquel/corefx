@@ -274,23 +274,14 @@ namespace System.Net.Http
 
         public IDictionary<string, object> Properties =>
             _settings._properties ?? (_settings._properties = new Dictionary<string, object>());
-
-        public Func<string, int, CancellationToken, ValueTask<(Socket, Stream)>> SocketDialer
+        
+        public Func<HttpRequestMessage, CancellationToken, ValueTask<Stream>> ConnectCallback
         {
-            get => _settings._socketDialer;
+            get => _settings._connectCallback;
             set
             {
                 CheckDisposedOrStarted();
-                _settings._socketDialer = value;
-            }
-        }
-        public Func<string, int, CancellationToken, ValueTask<Stream>> StreamDialer
-        {
-            get => _settings._streamDialer;
-            set
-            {
-                CheckDisposedOrStarted();
-                _settings._streamDialer = value;
+                _settings._connectCallback = value;
             }
         }
 
