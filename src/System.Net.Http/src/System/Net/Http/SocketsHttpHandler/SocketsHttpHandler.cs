@@ -3,7 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -272,6 +274,25 @@ namespace System.Net.Http
 
         public IDictionary<string, object> Properties =>
             _settings._properties ?? (_settings._properties = new Dictionary<string, object>());
+
+        public Func<string, int, CancellationToken, ValueTask<(Socket, Stream)>> SocketDialer
+        {
+            get => _settings._socketDialer;
+            set
+            {
+                CheckDisposedOrStarted();
+                _settings._socketDialer = value;
+            }
+        }
+        public Func<string, int, CancellationToken, ValueTask<Stream>> StreamDialer
+        {
+            get => _settings._streamDialer;
+            set
+            {
+                CheckDisposedOrStarted();
+                _settings._streamDialer = value;
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {

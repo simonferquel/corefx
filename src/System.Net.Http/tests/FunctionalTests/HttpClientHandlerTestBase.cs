@@ -4,6 +4,7 @@
 
 using System.Diagnostics;
 using System.Reflection;
+using System.Net.Sockets;
 using System.Net.Test.Common;
 
 namespace System.Net.Http.Functional.Tests
@@ -12,6 +13,7 @@ namespace System.Net.Http.Functional.Tests
     {
         protected virtual bool UseSocketsHttpHandler => true;
         protected virtual bool UseHttp2LoopbackServer => false;
+        protected virtual bool UseStreamDialer => false;
 
         protected bool IsWinHttpHandler => !UseSocketsHttpHandler && PlatformDetection.IsWindows && !PlatformDetection.IsUap && !PlatformDetection.IsFullFramework;
         protected bool IsCurlHandler => !UseSocketsHttpHandler && !PlatformDetection.IsWindows;
@@ -20,7 +22,7 @@ namespace System.Net.Http.Functional.Tests
 
         protected HttpClient CreateHttpClient() => new HttpClient(CreateHttpClientHandler());
 
-        protected HttpClientHandler CreateHttpClientHandler() => CreateHttpClientHandler(UseSocketsHttpHandler, UseHttp2LoopbackServer);
+        protected HttpClientHandler CreateHttpClientHandler() => CreateHttpClientHandler(UseSocketsHttpHandler, UseHttp2LoopbackServer, UseStreamDialer);
 
         protected static HttpClient CreateHttpClient(string useSocketsHttpHandlerBoolString) =>
             new HttpClient(CreateHttpClientHandler(useSocketsHttpHandlerBoolString));
@@ -28,7 +30,7 @@ namespace System.Net.Http.Functional.Tests
         protected static HttpClientHandler CreateHttpClientHandler(string useSocketsHttpHandlerBoolString) =>
             CreateHttpClientHandler(bool.Parse(useSocketsHttpHandlerBoolString));
 
-        protected static HttpClientHandler CreateHttpClientHandler(bool useSocketsHttpHandler, bool useHttp2LoopbackServer = false)
+        protected static HttpClientHandler CreateHttpClientHandler(bool useSocketsHttpHandler, bool useHttp2LoopbackServer = false, bool useStreamDialer = false)
         {
             HttpClientHandler handler;
 
@@ -43,7 +45,18 @@ namespace System.Net.Http.Functional.Tests
                 Debug.Assert(ctor != null, "Couldn't find test constructor on HttpClientHandler");
 
                 handler = (HttpClientHandler)ctor.Invoke(new object[] { useSocketsHttpHandler });
-                Debug.Assert(useSocketsHttpHandler == IsSocketsHttpHandler(handler), "Unexpected handler.");
+                Debug.Assert(useSocketsHttpHandler == IsSocketsHttpHandler(handler), "Unexpected handler.");                
+            }
+
+            if (useStreamDialer && useSocketsHttpHandler)
+            {
+                var socketsHandler = (GetUnderlyingSocketsHttpHandler(handler) as Http.SocketsHttpHandler);
+                socketsHandler.StreamDialer =  (string host, int port, Threading.CancellationToken cancellationToken) =>
+                {
+                    var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+                    socket.Connect(host, port);
+                    return new Threading.Tasks.ValueTask<IO.Stream>(new NetworkStream(socket, true));
+                };
             }
 
             TestHelper.EnsureHttp2Feature(handler);

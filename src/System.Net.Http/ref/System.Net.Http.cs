@@ -261,6 +261,8 @@ namespace System.Net.Http
         public System.Net.Security.SslClientAuthenticationOptions SslOptions { get { throw null; } set { } }
         public bool UseCookies { get { throw null; } set { } }
         public bool UseProxy { get { throw null; } set { } }
+        public Func<string, int, Threading.CancellationToken, Threading.Tasks.ValueTask<(Sockets.Socket, IO.Stream)>> SocketDialer { get { throw null; } set { } }
+        public Func<string, int, Threading.CancellationToken, Threading.Tasks.ValueTask<IO.Stream>> StreamDialer { get { throw null; } set { } }
         protected override void Dispose(bool disposing) { }
         protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) { throw null; }
     }

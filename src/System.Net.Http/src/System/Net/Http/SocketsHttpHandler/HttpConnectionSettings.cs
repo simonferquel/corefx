@@ -3,7 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Security;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.Net.Http
 {
@@ -44,6 +48,9 @@ namespace System.Net.Http
 
         internal IDictionary<string, object> _properties;
 
+        internal Func<string, int, CancellationToken, ValueTask<(Socket, Stream)>> _socketDialer;
+        internal Func<string, int, CancellationToken, ValueTask<Stream>> _streamDialer;
+
         public HttpConnectionSettings()
         {
             _maxHttpVersion = AllowHttp2 ? HttpVersion.Version20 : HttpVersion.Version11;
@@ -80,6 +87,8 @@ namespace System.Net.Http
                 _sslOptions = _sslOptions?.ShallowClone(), // shallow clone the options for basic prevention of mutation issues while processing
                 _useCookies = _useCookies,
                 _useProxy = _useProxy,
+                _socketDialer = _socketDialer,
+                _streamDialer = _streamDialer,
             };
         }
 

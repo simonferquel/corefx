@@ -20,7 +20,7 @@ using Xunit.Abstractions;
 
 namespace System.Net.Http.Functional.Tests
 {
-    public sealed class SocketsHttpHandler_HttpClientHandler_Asynchrony_Test : HttpClientHandler_Asynchrony_Test
+    public class SocketsHttpHandler_HttpClientHandler_Asynchrony_Test : HttpClientHandler_Asynchrony_Test
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -86,7 +86,14 @@ namespace System.Net.Http.Functional.Tests
         }
     }
 
-    public sealed class SocketsHttpHandler_HttpProtocolTests : HttpProtocolTests
+    [TestCategory("StreamDialer")]
+
+    public class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_Asynchrony_Test : SocketsHttpHandler_HttpClientHandler_Asynchrony_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpProtocolTests : HttpProtocolTests
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -99,41 +106,91 @@ namespace System.Net.Http.Functional.Tests
             CustomMethod_SentUppercasedIfKnown(specifiedMethod, expectedMethod);
     }
 
-    public sealed class SocketsHttpHandler_HttpProtocolTests_Dribble : HttpProtocolTests_Dribble
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpProtocolTests : SocketsHttpHandler_HttpProtocolTests
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpProtocolTests_Dribble : HttpProtocolTests_Dribble
+    {
+        protected override bool UseSocketsHttpHandler => true;
+    }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpProtocolTests_Dribble : SocketsHttpHandler_HttpProtocolTests_Dribble
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_DiagnosticsTest : DiagnosticsTest
+    {
+        protected override bool UseSocketsHttpHandler => true;
+    }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_DiagnosticsTest : SocketsHttpHandler_DiagnosticsTest
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClient_SelectedSites_Test : HttpClient_SelectedSites_Test
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_DiagnosticsTest : DiagnosticsTest
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClient_SelectedSites_Test : SocketsHttpHandler_HttpClient_SelectedSites_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientEKUTest : HttpClientEKUTest
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClient_SelectedSites_Test : HttpClient_SelectedSites_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientEKUTest : SocketsHttpHandler_HttpClientEKUTest
     {
-        protected override bool UseSocketsHttpHandler => true;
+        protected override bool UseStreamDialer => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientEKUTest : HttpClientEKUTest
-    {
-        protected override bool UseSocketsHttpHandler => true;
-    }
-
-    public sealed class SocketsHttpHandler_HttpClientHandler_Decompression_Tests : HttpClientHandler_Decompression_Test
+    public class SocketsHttpHandler_HttpClientHandler_Decompression_Tests : HttpClientHandler_Decompression_Test
     {
         public SocketsHttpHandler_HttpClientHandler_Decompression_Tests(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_DangerousAcceptAllCertificatesValidator_Test : HttpClientHandler_DangerousAcceptAllCertificatesValidator_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_Decompression_Tests : SocketsHttpHandler_HttpClientHandler_Decompression_Tests
+    {
+        public SocketsHttpHandlerWithStreamDialer_HttpClientHandler_Decompression_Tests(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_DangerousAcceptAllCertificatesValidator_Test : HttpClientHandler_DangerousAcceptAllCertificatesValidator_Test
     {
         protected override bool UseSocketsHttpHandler => true;
     }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_DangerousAcceptAllCertificatesValidator_Test : SocketsHttpHandler_HttpClientHandler_DangerousAcceptAllCertificatesValidator_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_ClientCertificates_Test : HttpClientHandler_ClientCertificates_Test
+    public class SocketsHttpHandler_HttpClientHandler_ClientCertificates_Test : HttpClientHandler_ClientCertificates_Test
     {
         public SocketsHttpHandler_HttpClientHandler_ClientCertificates_Test(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
+    }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_ClientCertificates_Test : SocketsHttpHandler_HttpClientHandler_ClientCertificates_Test
+    {
+        public SocketsHttpHandlerWithStreamDialer_HttpClientHandler_ClientCertificates_Test(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
     }
 
     public sealed class SocketsHttpHandler_HttpClientHandler_DefaultProxyCredentials_Test : HttpClientHandler_DefaultProxyCredentials_Test
@@ -141,7 +198,7 @@ namespace System.Net.Http.Functional.Tests
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_MaxConnectionsPerServer_Test : HttpClientHandler_MaxConnectionsPerServer_Test
+    public class SocketsHttpHandler_HttpClientHandler_MaxConnectionsPerServer_Test : HttpClientHandler_MaxConnectionsPerServer_Test
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -189,12 +246,24 @@ namespace System.Net.Http.Functional.Tests
         }
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_ServerCertificates_Test : HttpClientHandler_ServerCertificates_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_MaxConnectionsPerServer_Test : SocketsHttpHandler_HttpClientHandler_MaxConnectionsPerServer_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_ServerCertificates_Test : HttpClientHandler_ServerCertificates_Test
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_ResponseDrain_Test : HttpClientHandler_ResponseDrain_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_ServerCertificates_Test : SocketsHttpHandler_HttpClientHandler_ServerCertificates_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_ResponseDrain_Test : HttpClientHandler_ResponseDrain_Test
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -437,21 +506,47 @@ namespace System.Net.Http.Functional.Tests
         }
     }
 
-    public sealed class SocketsHttpHandler_PostScenarioTest : PostScenarioTest
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_ResponseDrain_Test : SocketsHttpHandler_HttpClientHandler_ResponseDrain_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_PostScenarioTest : PostScenarioTest
     {
         public SocketsHttpHandler_PostScenarioTest(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
-
-    public sealed class SocketsHttpHandler_ResponseStreamTest : ResponseStreamTest
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_PostScenarioTest : SocketsHttpHandler_PostScenarioTest
+    {
+        public SocketsHttpHandlerWithStreamDialer_PostScenarioTest(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
+    
+    public  class SocketsHttpHandler_ResponseStreamTest : ResponseStreamTest
     {
         public SocketsHttpHandler_ResponseStreamTest(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_SslProtocols_Test : HttpClientHandler_SslProtocols_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_ResponseStreamTest : SocketsHttpHandler_ResponseStreamTest
+    {
+        public SocketsHttpHandlerWithStreamDialer_ResponseStreamTest(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_SslProtocols_Test : HttpClientHandler_SslProtocols_Test
     {
         protected override bool UseSocketsHttpHandler => true;
+    }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_SslProtocols_Test : SocketsHttpHandler_HttpClientHandler_SslProtocols_Test
+    {
+        protected override bool UseStreamDialer => true;
     }
 
     public sealed class SocketsHttpHandler_HttpClientHandler_Proxy_Test : HttpClientHandler_Proxy_Test
@@ -460,57 +555,115 @@ namespace System.Net.Http.Functional.Tests
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_SchSendAuxRecordHttpTest : SchSendAuxRecordHttpTest
+    public class SocketsHttpHandler_SchSendAuxRecordHttpTest : SchSendAuxRecordHttpTest
     {
         public SocketsHttpHandler_SchSendAuxRecordHttpTest(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientMiniStress : HttpClientMiniStress
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_SchSendAuxRecordHttpTest : SocketsHttpHandler_SchSendAuxRecordHttpTest
+    {
+        public SocketsHttpHandlerWithStreamDialer_SchSendAuxRecordHttpTest(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientMiniStress : HttpClientMiniStress
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandlerTest : HttpClientHandlerTest
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientMiniStress : SocketsHttpHandler_HttpClientMiniStress
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandlerTest : HttpClientHandlerTest
     {
         public SocketsHttpHandler_HttpClientHandlerTest(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandlerTest_AutoRedirect : HttpClientHandlerTest_AutoRedirect
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandlerTest : SocketsHttpHandler_HttpClientHandlerTest
+    {
+        public SocketsHttpHandlerWithStreamDialer_HttpClientHandlerTest(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandlerTest_AutoRedirect : HttpClientHandlerTest_AutoRedirect
     {
         public SocketsHttpHandlerTest_AutoRedirect(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_DefaultCredentialsTest : DefaultCredentialsTest
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_AutoRedirect : SocketsHttpHandlerTest_AutoRedirect
+    {
+        public SocketsHttpHandlerWithStreamDialer_AutoRedirect(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
+
+    public  class SocketsHttpHandler_DefaultCredentialsTest : DefaultCredentialsTest
     {
         public SocketsHttpHandler_DefaultCredentialsTest(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
     }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_DefaultCredentialsTest : SocketsHttpHandler_DefaultCredentialsTest
+    {
+        public SocketsHttpHandlerWithStreamDialer_DefaultCredentialsTest(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
 
-    public sealed class SocketsHttpHandler_IdnaProtocolTests : IdnaProtocolTests
+    public class SocketsHttpHandler_IdnaProtocolTests : IdnaProtocolTests
     {
         protected override bool UseSocketsHttpHandler => true;
         protected override bool SupportsIdna => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpRetryProtocolTests : HttpRetryProtocolTests
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_IdnaProtocolTests : SocketsHttpHandler_IdnaProtocolTests
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpRetryProtocolTests : HttpRetryProtocolTests
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandlerTest_Cookies : HttpClientHandlerTest_Cookies
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpRetryProtocolTests : SocketsHttpHandler_HttpRetryProtocolTests
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandlerTest_Cookies : HttpClientHandlerTest_Cookies
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandlerTest_Cookies_Http11 : HttpClientHandlerTest_Cookies_Http11
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_Cookies : SocketsHttpHandlerTest_Cookies
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandlerTest_Cookies_Http11 : HttpClientHandlerTest_Cookies_Http11
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_Cancellation_Test : HttpClientHandler_Cancellation_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_Cookies_Http11 : SocketsHttpHandlerTest_Cookies_Http11
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_Cancellation_Test : HttpClientHandler_Cancellation_Test
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -682,13 +835,25 @@ namespace System.Net.Http.Functional.Tests
             }
         }
     }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_Cancellation_Test : SocketsHttpHandler_HttpClientHandler_Cancellation_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_MaxResponseHeadersLength_Test : HttpClientHandler_MaxResponseHeadersLength_Test
+    public class SocketsHttpHandler_HttpClientHandler_MaxResponseHeadersLength_Test : HttpClientHandler_MaxResponseHeadersLength_Test
     {
         protected override bool UseSocketsHttpHandler => true;
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_Authentication_Test : HttpClientHandler_Authentication_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_MaxResponseHeadersLength_Test : SocketsHttpHandler_HttpClientHandler_MaxResponseHeadersLength_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_Authentication_Test : HttpClientHandler_Authentication_Test
     {
         public SocketsHttpHandler_HttpClientHandler_Authentication_Test(ITestOutputHelper output) : base(output) { }
         protected override bool UseSocketsHttpHandler => true;
@@ -729,8 +894,15 @@ namespace System.Net.Http.Functional.Tests
             yield return new object[] { $"Digest realm=\"testrealm\", algorithm=sha-256-SESS, nonce=\"testnonce\"", true };
         }
     }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_Authenticationh_Test : SocketsHttpHandler_HttpClientHandler_Authentication_Test
+    {
+        public SocketsHttpHandlerWithStreamDialer_HttpClientHandler_Authenticationh_Test(ITestOutputHelper output) : base(output) { }
+        protected override bool UseStreamDialer => true;
+    }
 
-    public sealed class SocketsHttpHandler_ConnectionUpgrade_Test : HttpClientHandlerTestBase
+    public class SocketsHttpHandler_ConnectionUpgrade_Test : HttpClientHandlerTestBase
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -849,7 +1021,13 @@ namespace System.Net.Http.Functional.Tests
         }
     }
 
-    public sealed class SocketsHttpHandler_Connect_Test : HttpClientHandlerTestBase
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_ConnectionUpgrade_Test : SocketsHttpHandler_ConnectionUpgrade_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_Connect_Test : HttpClientHandlerTestBase
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -938,7 +1116,13 @@ namespace System.Net.Http.Functional.Tests
         }
     }
 
-    public sealed class SocketsHttpHandler_HttpClientHandler_ConnectionPooling_Test : HttpClientHandlerTestBase
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_Connect_Test : SocketsHttpHandler_Connect_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_HttpClientHandler_ConnectionPooling_Test : HttpClientHandlerTestBase
     {
         protected override bool UseSocketsHttpHandler => true;
 
@@ -1229,7 +1413,13 @@ namespace System.Net.Http.Functional.Tests
         }
     }
 
-    public sealed class SocketsHttpHandler_PublicAPIBehavior_Test
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_HttpClientHandler_ConnectionPooling_Test : SocketsHttpHandler_HttpClientHandler_ConnectionPooling_Test
+    {
+        protected override bool UseStreamDialer => true;
+    }
+
+    public class SocketsHttpHandler_PublicAPIBehavior_Test
     {
         private static async Task IssueRequestAsync(HttpMessageHandler handler)
         {
@@ -1558,7 +1748,7 @@ namespace System.Net.Http.Functional.Tests
             }
         }
     }
-
+    
     public sealed class SocketsHttpHandler_ExternalConfiguration_Test : HttpClientHandlerTestBase
     {
         private const string EnvironmentVariableSettingName = "DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER";
@@ -1638,16 +1828,29 @@ namespace System.Net.Http.Functional.Tests
             }).Dispose();
         }
     }
-
-    public sealed class SocketsHttpHandlerTest_Http2 : HttpClientHandlerTest_Http2
+    
+    public class SocketsHttpHandlerTest_Http2 : HttpClientHandlerTest_Http2
     {
         protected override bool UseSocketsHttpHandler => true;
     }
+    
+    [TestCategory("StreamDialer")]
+    public sealed class SocketsHttpHandlerWithStreamDialer_Http2 : SocketsHttpHandlerTest_Http2
+    {
+        protected override bool UseStreamDialer => true;
+    }
 
     [ConditionalClass(typeof(PlatformDetection), nameof(PlatformDetection.SupportsAlpn))]
-    public sealed class SocketsHttpHandlerTest_Cookies_Http2 : HttpClientHandlerTest_Cookies
+    public class SocketsHttpHandlerTest_Cookies_Http2 : HttpClientHandlerTest_Cookies
     {
         protected override bool UseSocketsHttpHandler => true;
         protected override bool UseHttp2LoopbackServer => true;
+    }
+
+    [TestCategory("StreamDialer")]
+    [ConditionalClass(typeof(PlatformDetection), nameof(PlatformDetection.SupportsAlpn))]
+    public sealed class SocketsHttpHandlerWithStreamDialer_Cookies_Http2 : SocketsHttpHandlerTest_Cookies_Http2
+    {
+        protected override bool UseStreamDialer => true;
     }
 }

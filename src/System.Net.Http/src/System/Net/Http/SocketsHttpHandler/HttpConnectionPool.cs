@@ -584,16 +584,24 @@ namespace System.Net.Http
             {
                 Socket socket = null;
                 Stream stream = null;
+                Func<string, int, CancellationToken, ValueTask<(Socket, Stream)>> socketDialer = ConnectHelper.ConnectAsync;
+                if (Settings._socketDialer != null)
+                {
+                    socketDialer = Settings._socketDialer;
+                } else if (Settings._streamDialer != null)
+                {
+                    socketDialer = async (string host, int port, CancellationToken cancellationToken) => (null, await Settings._streamDialer(host, port, cancellationToken));
+                }                
                 switch (_kind)
                 {
                     case HttpConnectionKind.Http:
                     case HttpConnectionKind.Https:
-                    case HttpConnectionKind.ProxyConnect:
-                        (socket, stream) = await ConnectHelper.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
+                    case HttpConnectionKind.ProxyConnect:                 
+                        (socket, stream) = await socketDialer(_host, _port, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case HttpConnectionKind.Proxy:
-                        (socket, stream) = await ConnectHelper.ConnectAsync(_proxyUri.IdnHost, _proxyUri.Port, cancellationToken).ConfigureAwait(false);
+                        (socket, stream) = await socketDialer(_proxyUri.IdnHost, _proxyUri.Port, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case HttpConnectionKind.ProxyTunnel:
@@ -619,12 +627,16 @@ namespace System.Net.Http
 
                 return (socket, stream, transportContext, null);
             }
+            catch(Exception ex) when (!(ex is HttpRequestException))
+            {
+                throw new HttpRequestException(ex.Message, ex);
+            }
             finally
             {
                 cancellationWithConnectTimeout?.Dispose();
             }
         }
-
+        
         internal async ValueTask<(HttpConnection, HttpResponseMessage)> CreateHttp11ConnectionAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             (Socket socket, Stream stream, TransportContext transportContext, HttpResponseMessage failureResponse) =
