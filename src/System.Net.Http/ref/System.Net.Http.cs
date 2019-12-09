@@ -241,6 +241,7 @@ namespace System.Net.Http
         protected internal override bool TryComputeLength(out long length) { throw null; }
     }
 #if !uap
+    public delegate System.Threading.Tasks.ValueTask<System.IO.Stream> ConnectCallback(string host, int port, System.Threading.CancellationToken cancellationToken);
     public sealed partial class SocketsHttpHandler : System.Net.Http.HttpMessageHandler
     {
         public SocketsHttpHandler() { }
@@ -266,6 +267,7 @@ namespace System.Net.Http
         public bool UseProxy { get { throw null; } set { } }
         protected override void Dispose(bool disposing) { }
         protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) { throw null; }
+        public ConnectCallback ConnectCallback { get { throw null; } set { } }
     }
 #endif
     public partial class StreamContent : System.Net.Http.HttpContent

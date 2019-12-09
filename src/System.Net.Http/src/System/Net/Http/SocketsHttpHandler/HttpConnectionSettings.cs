@@ -47,6 +47,7 @@ namespace System.Net.Http
         internal SslClientAuthenticationOptions _sslOptions;
 
         internal IDictionary<string, object> _properties;
+        internal ConnectCallback _connectCallback;
 
         public HttpConnectionSettings()
         {
@@ -88,6 +89,7 @@ namespace System.Net.Http
                 _useCookies = _useCookies,
                 _useProxy = _useProxy,
                 _allowUnencryptedHttp2 = _allowUnencryptedHttp2,
+                _connectCallback = _connectCallback,
             };
         }
 

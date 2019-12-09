@@ -44,6 +44,7 @@ namespace System.Net.Http
         /// <summary>Options specialized and cached for this pool and its key.</summary>
         private readonly SslClientAuthenticationOptions _sslOptionsHttp11;
         private readonly SslClientAuthenticationOptions _sslOptionsHttp2;
+        private readonly ConnectCallback _connectCallback;
 
         /// <summary>Queue of waiters waiting for a connection.  Created on demand.</summary>
         private Queue<TaskCompletionSourceWithCancellation<HttpConnection>> _waiters;
@@ -68,6 +69,7 @@ namespace System.Net.Http
             _port = port;
             _proxyUri = proxyUri;
             _maxConnections = maxConnections;
+            _connectCallback = poolManager.Settings._connectCallback ?? ConnectHelper.ConnectAsync;
 
             _http2Enabled = (_poolManager.Settings._maxHttpVersion == HttpVersion.Version20);
 
@@ -623,11 +625,11 @@ namespace System.Net.Http
                     case HttpConnectionKind.Http:
                     case HttpConnectionKind.Https:
                     case HttpConnectionKind.ProxyConnect:
-                        stream = await ConnectHelper.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
+                        stream = await _connectCallback(_host, _port, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case HttpConnectionKind.Proxy:
-                        stream = await ConnectHelper.ConnectAsync(_proxyUri.IdnHost, _proxyUri.Port, cancellationToken).ConfigureAwait(false);
+                        stream = await _connectCallback(_proxyUri.IdnHost, _proxyUri.Port, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case HttpConnectionKind.ProxyTunnel:

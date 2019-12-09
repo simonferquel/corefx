@@ -5,6 +5,7 @@
   <Target Name="Build" DependsOnTargets="GenerateNativeVersionFile;BuildNativeUnix;BuildNativeWindows" />
 
   <PropertyGroup>
+    <VerifyInputsAndOutputsExist>false</VerifyInputsAndOutputsExist>
     <!-- Hardcode version paths in a global location. -->
     <NativeVersionFile Condition="'$(OS)' == 'Windows_NT'">$(ArtifactsObjDir)_version.h</NativeVersionFile>
     <NativeVersionFile Condition="'$(OS)' != 'Windows_NT'">$(ArtifactsObjDir)_version.c</NativeVersionFile>
@@ -39,7 +40,7 @@
 
   <!-- We don't have any native components when building for netfx. -->
   <Target Name="BuildNativeWindows"
-          Condition="'$(OS)' == 'Windows_NT' AND '$(TargetsNetFx)' != 'true'">
+          Condition="'$(OS)' == 'Windows_NT' AND '$(TargetsNetFx)' != 'true' AND 'false' == 'true'">
 
     <PropertyGroup>
       <_BuildNativeWindowsArgs>$(_BuildNativeArgs)</_BuildNativeWindowsArgs>

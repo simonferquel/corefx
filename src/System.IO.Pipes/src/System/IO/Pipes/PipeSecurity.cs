@@ -270,6 +270,11 @@ namespace System.IO.Pipes
                 return typeof(PipeAuditRule);
             }
         }
+
+        public NamedPipeServerStream CreateNamedPipeServerStream(string pipeName, PipeDirection direction, int maxNumberOfServerInstances, PipeTransmissionMode transmissionMode, PipeOptions options, int inBufferSize, int outBufferSize)
+        {
+            return new NamedPipeServerStream(pipeName, direction, maxNumberOfServerInstances, transmissionMode, options, inBufferSize, outBufferSize, 0, this);
+        }
     }
 }
 

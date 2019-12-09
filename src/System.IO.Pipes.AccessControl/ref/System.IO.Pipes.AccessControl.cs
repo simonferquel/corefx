@@ -65,5 +65,6 @@ namespace System.IO.Pipes
         public void ResetAccessRule(System.IO.Pipes.PipeAccessRule rule) { }
         public void SetAccessRule(System.IO.Pipes.PipeAccessRule rule) { }
         public void SetAuditRule(System.IO.Pipes.PipeAuditRule rule) { }
+        public System.IO.Pipes.NamedPipeServerStream CreateNamedPipeServerStream(string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, int inBufferSize, int outBufferSize){ throw null; }
     }
 }

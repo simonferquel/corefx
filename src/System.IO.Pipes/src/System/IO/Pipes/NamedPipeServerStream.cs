@@ -47,32 +47,8 @@ namespace System.IO.Pipes
         public NamedPipeServerStream(string pipeName, PipeDirection direction, int maxNumberOfServerInstances, PipeTransmissionMode transmissionMode, PipeOptions options, int inBufferSize, int outBufferSize)
             : this(pipeName, direction, maxNumberOfServerInstances, transmissionMode, options, inBufferSize, outBufferSize, HandleInheritability.None)
         {
-        }
+        }        
 
-        /// <summary>
-        /// Full named pipe server constructor
-        /// </summary>
-        /// <param name="pipeName">Pipe name</param>
-        /// <param name="direction">Pipe direction: In, Out or InOut (duplex). 
-        /// Win32 note: this gets OR'd into dwOpenMode to CreateNamedPipe
-        /// </param>
-        /// <param name="maxNumberOfServerInstances">Maximum number of server instances. Specify a fixed value between 
-        /// 1 and 254 (Windows)/greater than 1 (Unix), or use NamedPipeServerStream.MaxAllowedServerInstances to use the 
-        /// maximum amount allowed by system resources.</param>
-        /// <param name="transmissionMode">Byte mode or message mode.
-        /// Win32 note: this gets used for dwPipeMode. CreateNamedPipe allows you to specify PIPE_TYPE_BYTE/MESSAGE
-        /// and PIPE_READMODE_BYTE/MESSAGE independently, but this sets type and readmode to match.
-        /// </param>
-        /// <param name="options">PipeOption enum: None, Asynchronous, or Write-through
-        /// Win32 note: this gets passed in with dwOpenMode to CreateNamedPipe. Asynchronous corresponds to 
-        /// FILE_FLAG_OVERLAPPED option. PipeOptions enum doesn't expose FIRST_PIPE_INSTANCE option because
-        /// this sets that automatically based on the number of instances specified.
-        /// </param>
-        /// <param name="inBufferSize">Incoming buffer size, 0 or higher.
-        /// Note: this size is always advisory; OS uses a suggestion.
-        /// </param>
-        /// <param name="outBufferSize">Outgoing buffer size, 0 or higher (see above)</param>
-        /// <param name="inheritability">Whether handle is inheritable</param>
         private NamedPipeServerStream(string pipeName, PipeDirection direction, int maxNumberOfServerInstances,
                 PipeTransmissionMode transmissionMode, PipeOptions options, int inBufferSize, int outBufferSize,
                 HandleInheritability inheritability)
@@ -118,6 +94,7 @@ namespace System.IO.Pipes
             Create(pipeName, direction, maxNumberOfServerInstances, transmissionMode,
             options, inBufferSize, outBufferSize, inheritability);
         }
+        
 
         // Create a NamedPipeServerStream from an existing server pipe handle.
         public NamedPipeServerStream(PipeDirection direction, bool isAsync, bool isConnected, SafePipeHandle safePipeHandle)

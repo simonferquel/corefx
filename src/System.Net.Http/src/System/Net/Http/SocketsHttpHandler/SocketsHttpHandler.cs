@@ -388,5 +388,15 @@ namespace System.Net.Http
 
             return null;
         }
+
+        public ConnectCallback ConnectCallback
+        {
+            get => _settings._connectCallback;
+            set
+            {
+                CheckDisposedOrStarted();
+                _settings._connectCallback = value;
+            }
+        }
     }
 }
