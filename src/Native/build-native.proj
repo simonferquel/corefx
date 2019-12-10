@@ -40,7 +40,7 @@
 
   <!-- We don't have any native components when building for netfx. -->
   <Target Name="BuildNativeWindows"
-          Condition="'$(OS)' == 'Windows_NT' AND '$(TargetsNetFx)' != 'true' AND 'false' == 'true'">
+          Condition="'$(OS)' == 'Windows_NT' AND '$(TargetsNetFx)' != 'true' AND 'true' == 'false'">
 
     <PropertyGroup>
       <_BuildNativeWindowsArgs>$(_BuildNativeArgs)</_BuildNativeWindowsArgs>
